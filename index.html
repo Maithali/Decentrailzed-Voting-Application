@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Voting Dapp</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      body {
+        min-height: 100vh;
+        background: linear-gradient(135deg, #1f1c2c, #928dab);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+        color: white;
+        overflow-x: hidden;
+      }
+
+      .navbar {
+        width: 100%;
+        max-width: 800px;
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        margin-bottom: 2rem;
+        backdrop-filter: blur(10px);
+      }
+
+      .navbar a {
+        color: #fff;
+        text-decoration: none;
+        font-weight: bold;
+        padding: 0.7rem 1.5rem;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+        background: rgba(255, 255, 255, 0.1);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      }
+
+      .navbar a:hover {
+        background: rgba(255, 255, 255, 0.25);
+        transform: translateY(-3px) scale(1.05);
+      }
+
+      .container {
+        width: 100%;
+        max-width: 800px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 20px;
+        padding: 2rem;
+        margin: 1rem 0;
+        text-align: center;
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+        transition: transform 0.5s;
+      }
+
+      .container:hover {
+        transform: scale(1.01);
+      }
+
+      input[type="number"] {
+        padding: 0.8rem;
+        margin-top: 1rem;
+        border-radius: 10px;
+        border: none;
+        width: 80%;
+        max-width: 300px;
+        font-size: 1rem;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3) inset;
+        transition: box-shadow 0.3s;
+      }
+
+      input[type="number"]:focus {
+        outline: none;
+        box-shadow: 0 0 10px 2px #a29bfe inset;
+      }
+
+      button {
+        margin-top: 1rem;
+        padding: 0.8rem 1.5rem;
+        font-size: 1rem;
+        border: none;
+        border-radius: 12px;
+        background: linear-gradient(145deg, #00d2ff, #3a47d5);
+        color: white;
+        cursor: pointer;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+        transition: all 0.3s ease;
+        perspective: 500px;
+      }
+
+      button:hover {
+        transform: rotateX(5deg) translateY(-3px);
+        box-shadow: 0 15px 25px rgba(0, 0, 0, 0.6);
+      }
+
+      span {
+        font-size: 1.3rem;
+        font-weight: bold;
+        display: block;
+        margin-bottom: 1rem;
+        color: #ffdd57;
+        text-shadow: 0 0 10px #ffdd57, 0 0 20px #ffdd57;
+      }
+
+      p {
+        margin-top: 1rem;
+        font-size: 1rem;
+        animation: fadeIn 1.5s ease-in-out;
+      }
+
+      @keyframes fadeIn {
+        0% {
+          opacity: 0;
+          transform: translateY(15px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      :root {
+        --bg: linear-gradient(135deg, #1f1c2c, #928dab);
+        --text-color: #fff;
+        --card-bg: rgba(255, 255, 255, 0.05);
+        --highlight: #ffdd57;
+        --btn-gradient: linear-gradient(145deg, #00d2ff, #3a47d5);
+      }
+
+      body.dark-mode {
+        --bg: linear-gradient(135deg, #121212, #3a3a3a);
+        --text-color: #e0e0e0;
+        --card-bg: rgba(255, 255, 255, 0.1);
+        --highlight: #90caf9;
+        --btn-gradient: linear-gradient(145deg, #8e2de2, #4a00e0);
+      }
+
+      body {
+        background: var(--bg);
+        color: var(--text-color);
+        transition: all 0.4s ease;
+      }
+
+      .navbar a,
+      .container,
+      input,
+      button,
+      span,
+      p {
+        transition: all 0.4s ease;
+      }
+
+      .navbar a {
+        background: var(--card-bg);
+      }
+
+      .container {
+        background: var(--card-bg);
+      }
+
+      span {
+        color: var(--highlight);
+        text-shadow: 0 0 10px var(--highlight), 0 0 20px var(--highlight);
+      }
+
+      button {
+        background: var(--btn-gradient);
+        position: relative;
+        overflow: hidden;
+      }
+
+      button::before {
+        content: "";
+        position: absolute;
+        top: var(--y);
+        left: var(--x);
+        width: 0;
+        height: 0;
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        transition: width 0.4s ease, height 0.4s ease;
+        z-index: 0;
+      }
+
+      button:hover::before {
+        width: 300px;
+        height: 300px;
+      }
+
+      button span {
+        position: relative;
+        z-index: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="navbar">
+      <a href="/index.html">Vote</a>
+      <a href="/Listvoters.html">List Voters</a>
+    </div>
+    <div style="position: absolute; top: 1rem; right: 1rem">
+      <button id="darkModeToggle">🌙 Toggle Dark Mode</button>
+    </div>
+
+    <div class="container">Welcome to the Decentralized Voting Application</div>
+    <div>
+      <button onclick="connectMetamask()">Connect Metamask</button>
+      <p id="metamasknotification"></p>
+    </div>
+
+    <div class="container">
+      <span>Vote Here</span>
+      <input type="number" id="vote" placeholder="Add index of the voter..." />
+      <button onclick="addVote()">Add Vote</button>
+      <p id="cand"></p>
+    </div>
+
+    <div>
+      <button onclick="voteStatus()">Check Voting Status</button>
+      <p id="status"></p>
+      <p id="time"></p>
+    </div>
+  </body>
+  <script>
+    // 3D Mouse Glow Effect
+    document.querySelectorAll("button").forEach((btn) => {
+      btn.addEventListener("mousemove", function (e) {
+        const rect = btn.getBoundingClientRect();
+        const x = e.clientX - rect.left + "px";
+        const y = e.clientY - rect.top + "px";
+        btn.style.setProperty("--x", x);
+        btn.style.setProperty("--y", y);
+      });
+    });
+
+    // Dark Mode Toggle
+    const toggle = document.getElementById("darkModeToggle");
+    toggle.addEventListener("click", () => {
+      document.body.classList.toggle("dark-mode");
+      toggle.textContent = document.body.classList.contains("dark-mode")
+        ? "☀️ Light Mode"
+        : "🌙 Dark Mode";
+    });
+  </script>
+</html>
